@@ -1,0 +1,17 @@
+{
+  "name": "mobile_flashcard",
+  "displayName": "mobile_flashcard",
+  "expo": {
+    "name": "mobile_flashcard",
+    "slug": "mobile_flashcard",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
