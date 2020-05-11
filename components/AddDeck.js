@@ -4,6 +4,8 @@ import {CommonActions} from '@react-navigation/native';
 
 import { white, purple } from '../utils/color';
 import {saveDeckTitle} from '../utils/helpers';
+import { connect } from 'react-redux';
+import { addDeckHandler } from '../store/actions';
 
 function SubmitBtn ({onPress, ...props}) {
     return(
@@ -28,7 +30,8 @@ class AddDeck extends Component {
     }
     
     submitHandler = () =>{
-        saveDeckTitle(this.state.DeckName);
+        
+        this.props.dispatch(addDeckHandler(this.state.DeckName))
         this.setState(()=>({
             DeckName:''
         }))
@@ -105,4 +108,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default AddDeck;
+export default connect()(AddDeck);

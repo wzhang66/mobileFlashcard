@@ -1,63 +1,59 @@
 import React,{Component} from 'react';
 import {Text, View, StyleSheet, ActivityIndicator, ScrollView} from 'react-native';
-import { getDecks } from '../utils/helpers';
 import { purple } from '../utils/color';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import { receiveDecksHandler } from '../store/actions';
 
 class Decks extends Component {
     state={
-        decks:{},
         ready:false
     }
 
-    refresh = () =>{
-        this.setState({
-            ready:fals
-        })
-        getDecks()
-            .then((retrieveCards)=>this.setState((state)=>({
-                ...state,
-                decks:retrieveCards,
-                ready: true
-            }))) 
-    }
-
     componentDidMount(){
-        getDecks()
-            .then((retrieveCards)=>this.setState((state)=>({
-                ...state,
-                decks:retrieveCards,
-                ready: true
-            }))) 
+        this.props.dispatch(receiveDecksHandler())
+            .then(()=>{
+                this.setState({
+                    ready:true
+                })
+            })
+        
+        
     }
 
     render(){
         if(!this.state.ready){
             return <ActivityIndicator style={{marginTop: 30}} />
-        }
-        const decksList = Object.keys(this.state.decks);
+        } else {
+        const {decks} = this.props;
+        const decksList = Object.keys(decks)
         return(
             <ScrollView>
-                
                 <View style={styles.container}>
                     {decksList.map((deck)=>(
                         <View key={deck} style={styles.deck}>
                             <TouchableOpacity onPress={()=>this.props.navigation.navigate(
                                 'DeckDetails',
-                                {title:deck}
+                                {deckId: deck}
                             )}>
-                                <Text style={[styles.deckText, {fontSize:25}]}>{this.state.decks[deck].title}</Text>
-                                <Text style={styles.deckText}>{this.state.decks[deck].questions.length} cards</Text>
+                                <Text style={[styles.deckText, {fontSize:25}]}>{decks[deck].title}</Text>
+                                <Text style={styles.deckText}>{decks[deck].questions.length} cards</Text>
                             </TouchableOpacity> 
                         </View>
                     ))}
                 </View>
             </ScrollView>
-        )
+        )}
     }
 }
 
-export default Decks;
+const mapStateToProps = (decks) => {
+    return {
+        decks
+    }
+}
+
+export default connect(mapStateToProps)(Decks);
 
 const styles = StyleSheet.create({
     container:{

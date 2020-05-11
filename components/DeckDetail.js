@@ -1,61 +1,39 @@
 import React,{Component} from 'react';
 import {View, Text, StyleSheet, ActivityIndicator, AsyncStorage} from 'react-native';
-import { getDeck } from '../utils/helpers';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { red } from '../utils/color';
+import { connect } from 'react-redux';
+import { removeDeckHandler } from '../store/actions';
 
 class DeckDetails extends Component {
-    state={
-        title:'',
-        questions: [],
-        ready: false
-    }
-    
-    
     setTitle = (deckTitle) => {
         this.props.navigation.setOptions({
             title: `${deckTitle} Deck`
         })
     }
 
-    componentDidMount(){
-        const{title} = this.props.route.params;
-        getDeck(title).then(deck=>{
-            const receiveDeck = JSON.parse(deck);
-            this.setState(()=>({
-            title: receiveDeck.title,
-            questions: receiveDeck.questions,
-            ready: true
-        })
-        )}
-        )
-    }
-
-    deleteHandler = () => {
+    deleteHandler = (deckId) => {
         this.props.navigation.navigate(
             'Home'
         );
-        console.log('deleting');
-        AsyncStorage.removeItem(this.state.title)
+        this.props.dispatch(removeDeckHandler(deckId))
+        console.log('deleting', deckId);
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext){
+        return nextProps.deck !== undefined
     }
 
     render(){
-        const {title} = this.props.route.params;
-        this.setTitle(title);
-        if(!this.state.ready) {
-            return(
-                <ActivityIndicator />
-            )
-        }
-        const {questions} = this.state;
-        
+        const {deck} = this.props;
+        this.setTitle(deck.title);        
         return(
             <View>
                 <Text>
-                    {title}
+                    {deck.title}
                 </Text>
                 <Text>
-                    {questions.length} cards
+                    {deck.questions.length} cards
                 </Text>
 
                 <TouchableOpacity 
@@ -66,7 +44,7 @@ class DeckDetails extends Component {
                         Start Quiz
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this.deleteHandler}>
+                <TouchableOpacity onPress={()=>this.deleteHandler(deck.id)}>
                     <Text style={{color:red}}>
                         Delete Deck
                     </Text>
@@ -76,4 +54,11 @@ class DeckDetails extends Component {
     }
 }
 
-export default DeckDetails;
+const mapStateToProps = (decks,{route}) => {
+    const id = route.params.deckId
+    return {
+        deck:decks[id]
+    }
+}
+
+export default connect(mapStateToProps)(DeckDetails);

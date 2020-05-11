@@ -6,12 +6,17 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 
 import Decks from './components/Decks';
 import AddDeck from './components/AddDeck';
 import DeckDetails from './components/DeckDetail';
 import NoCardPage from './components/NoCardsPage';
 import { purple, white } from './utils/color';
+import reducer from './store/reducers';
+
 
 
 function MobileStatusBar ({backgroundColor, ...props}){
@@ -98,6 +103,7 @@ const MainNav = () =>(
 export default class App extends Component{
   render(){
     return (
+      <Provider store={createStore(reducer,applyMiddleware(thunk))} >
       <View style={styles.container}>
         {/* <Home /> */}
         {/* <AddDeck /> */}
@@ -106,6 +112,7 @@ export default class App extends Component{
           <MainNav />
         </NavigationContainer>
       </View>
+      </Provider>
     );
   }
 }
