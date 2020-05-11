@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import {View, StyleSheet, Text, TextInput, TouchableOpacity, Platform} from 'react-native';
+import {View, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
 import { white, purple } from '../utils/color';
@@ -10,9 +10,9 @@ import { addDeckHandler } from '../store/actions';
 function SubmitBtn ({onPress, ...props}) {
     return(
         <TouchableOpacity
-            style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androidSubmitBtn}
+            style={styles.androidSubmitBtn}
             onPress={onPress} {...props} >
-            <Text style={styles.submitBtnText}>submit</Text>
+            <Text style={styles.submitBtnText}>Create Deck</Text>
         </TouchableOpacity>
     )
 }
@@ -46,15 +46,15 @@ class AddDeck extends Component {
 
     render(){
         return(
-            <View>
-                <Text>
-                    Add a new Deck
+            <View style={styles.container}>
+                <Text style={styles.title}>
+                    What is the title of your new deck?
                 </Text>
                 <TextInput 
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 2, padding:10}}
+                    style={styles.inputFrame}
                     onChangeText={(text)=>this.DeckNameChange(text)}
                     value={this.state.DeckName}
-                    placeholder='Input the name of new Deck' />
+                    placeholder='Enter Title' />
                 <SubmitBtn onPress={this.submitHandler} disabled={this.state.DeckName.length === 0} />
             </View>
         )
@@ -65,21 +65,22 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         padding: 20,
-        backgroundColor: white
+        alignItems: 'center'
     },
-    row: {
-        flexDirection: 'row',
-        flex: 1,
-        alignItems:"center"
+    title:{
+        fontSize:30,
+        textAlign:"center",
+        paddingBottom:20
+    },  
+    inputFrame:{
+        width: 300,
+        height: 40, 
+        borderColor: 'gray', 
+        borderWidth: 2, 
+        padding:10,
+        margin:10
     },
-    iosSubmitBtn: {
-        backgroundColor:purple,
-        padding: 10,
-        borderRadius: 7,
-        height: 45,
-        marginRight: 40,
-        marginLeft: 40
-    },
+
     androidSubmitBtn: {
         backgroundColor:purple,
         padding:10,
@@ -88,7 +89,6 @@ const styles = StyleSheet.create({
         paddingRight: 30,
         height: 45,
         borderRadius: 2,
-        alignSelf: 'flex-end',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -96,14 +96,6 @@ const styles = StyleSheet.create({
         color:white,
         fontSize:22,
         textAlign: 'center'
-    },
-    center: {
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center',
-        marginLeft: 30,
-        marginRight: 30,
-
     },
 })
 
