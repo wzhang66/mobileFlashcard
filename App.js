@@ -30,7 +30,7 @@ const RouteConfigs = {
   Decks:{
     name:'Decks',
     component: Decks,
-    options: {tabBarIcon: ({tintColor}) => <Ionicons name='ios-bookmarks' size={30} color={tintColor} />, title: 'Decks'}
+    options: {tabBarIcon: ({tintColor}) => <Ionicons name='ios-bookmarks' size={30} color={tintColor} />, title: 'Decks'},
   },
   AddDeck:{
     component: AddDeck,

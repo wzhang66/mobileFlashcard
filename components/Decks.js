@@ -10,6 +10,18 @@ class Decks extends Component {
         ready:false
     }
 
+    refresh = () =>{
+        this.setState({
+            ready:fals
+        })
+        getDecks()
+            .then((retrieveCards)=>this.setState((state)=>({
+                ...state,
+                decks:retrieveCards,
+                ready: true
+            }))) 
+    }
+
     componentDidMount(){
         getDecks()
             .then((retrieveCards)=>this.setState((state)=>({
@@ -26,19 +38,20 @@ class Decks extends Component {
         const decksList = Object.keys(this.state.decks);
         return(
             <ScrollView>
-            <View style={styles.container}>
-                {decksList.map((deck)=>(
-                    <View key={deck} style={styles.deck}>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate(
-                            'DeckDetails',
-                            {title:deck}
-                        )}>
-                            <Text style={[styles.deckText, {fontSize:25}]}>{this.state.decks[deck].title}</Text>
-                            <Text style={styles.deckText}>{this.state.decks[deck].questions.length} cards</Text>
-                        </TouchableOpacity> 
-                    </View>
-                ))}
-            </View>
+                
+                <View style={styles.container}>
+                    {decksList.map((deck)=>(
+                        <View key={deck} style={styles.deck}>
+                            <TouchableOpacity onPress={()=>this.props.navigation.navigate(
+                                'DeckDetails',
+                                {title:deck}
+                            )}>
+                                <Text style={[styles.deckText, {fontSize:25}]}>{this.state.decks[deck].title}</Text>
+                                <Text style={styles.deckText}>{this.state.decks[deck].questions.length} cards</Text>
+                            </TouchableOpacity> 
+                        </View>
+                    ))}
+                </View>
             </ScrollView>
         )
     }
