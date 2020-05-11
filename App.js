@@ -12,6 +12,7 @@ import thunk from 'redux-thunk';
 
 import Decks from './components/Decks';
 import AddDeck from './components/AddDeck';
+import NewCard from './components/NewCard';
 import DeckDetails from './components/DeckDetail';
 import NoCardPage from './components/NoCardsPage';
 import { purple, white } from './utils/color';
@@ -90,6 +91,15 @@ const MainNav = () =>(
     <Stack.Screen 
       name="NoCard"
       component={NoCardPage}
+      options={{
+        headerTintColor: white,
+        headerStyle:{
+          backgroundColor:purple
+        }
+      }} />
+      <Stack.Screen 
+      name="NewCard"
+      component={NewCard}
       options={{
         headerTintColor: white,
         headerStyle:{
