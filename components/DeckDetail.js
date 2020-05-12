@@ -21,6 +21,7 @@ class DeckDetails extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext){
+        console.log("update?")
         return nextProps.deck !== undefined
     }
 
@@ -51,7 +52,8 @@ class DeckDetails extends Component {
                     <TouchableOpacity 
                         style={styles.buttonBlack}
                         onPress={()=>this.props.navigation.navigate(
-                            'NewCard'
+                            'NewCard',
+                            {deckId:deck.id}
                         )}>
                         <Text style={{color:white,fontSize:20}}>
                             Add Card

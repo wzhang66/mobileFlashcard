@@ -17,7 +17,7 @@ export default function decks (state={},action){
                 ...state,
                 [action.deckId]:{
                     ...state[action.deckId],
-                    questions:state[action.deckId].questions.concat([card])
+                    questions:state[action.deckId].questions.concat([action.card])
                 }
             }
         case REMOVE_DECK:
