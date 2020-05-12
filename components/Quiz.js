@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { red,green, white } from '../utils/color';
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers';
 
 
 
@@ -65,6 +66,30 @@ class Quiz extends Component{
         }
     }
 
+    resetQuiz=() => {
+        this.setState({
+            questionIndex: 0,
+            correctAnswer: 0,
+            completestatus: false,
+            showAnwer: false,
+        })
+    }
+
+    resetLocalNotification = () => {
+        clearLocalNotification().then(setLocalNotification)
+    }
+
+    // goBack = () =>{
+    //     // Navigate to Home
+        
+    //     // Clear local notification and reset
+    //     // clearLocalNotification()
+    //     //     .then(()=>{
+    //     //         console.log(reseting);
+    //     //         setLocalNotification()
+    //     //     })
+    // }
+
     render() {
         const {questions} = this.props.deck;
         if(this.props.deck.questions.length === 0){
@@ -117,7 +142,8 @@ class Quiz extends Component{
     )
     Content
     showScore = () => {
-        this.setTitle('Score')
+        this.setTitle('Score');
+        this.resetLocalNotification()
         return(
         <View style={styles.containers}>
             <Text style={styles.text}>
@@ -125,8 +151,13 @@ class Quiz extends Component{
             </Text>
             <TouchableOpacity
                 style={styles.goHomeButton}
-                onPress={()=>this.props.navigation.navigate('Home')} >
-                <Text style={{fontSize:15}}>Go back to Home</Text>
+                onPress={this.resetQuiz} >
+                <Text style={{fontSize:15}}>Retake Quiz</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.goHomeButton}
+                onPress={()=>this.props.navigation.goBack()} >
+                <Text style={{fontSize:15}}>Go back to Deck</Text>
             </TouchableOpacity>
         </View>
     )}

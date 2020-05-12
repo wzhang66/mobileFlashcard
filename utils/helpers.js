@@ -1,6 +1,9 @@
 import {AsyncStorage} from 'react-native';
+import {Notifications} from 'expo';
+import * as Permissions from 'expo-permissions';
 
-const FLASHCARDS_DATA_KEY = "flashcards_data"
+const FLASHCARDS_DATA_KEY = "flashcards_data";
+const FLASHCARDS_NOTIFICATION_KEY = "flashcards_notification";
 
 function generateUID () {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -86,3 +89,56 @@ export async function deleteDeck (deckId) {
     }
     return {};
 }
+
+// Handle notification
+export function clearLocalNotification () {
+    console.log("clearing");
+    return AsyncStorage.removeItem(FLASHCARDS_NOTIFICATION_KEY)
+      .then(Notifications.cancelScheduledNotificationAsync)
+}
+
+function createNotification () {
+    return{
+        title:'Take your quiz today',
+        body: 'Do not forget to take at least one quiz today',
+        ios:{
+            sound:true,
+        },
+        android: {
+            sound: true,
+            priority: 'hight',
+            sticky: false,
+            vibrate: true
+        }
+
+    }
+}
+export function setLocalNotification () {
+    AsyncStorage.getItem(FLASHCARDS_NOTIFICATION_KEY)
+      .then(JSON.parse)
+      .then((data)=>{
+        console.log(data)
+        if(data === null ){
+          Permissions.askAsync(Permissions.NOTIFICATIONS)
+            .then(({status})=>{
+                console.log(status)
+              if(status === 'granted'){
+                Notifications.cancelScheduledNotificationAsync();
+                let tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1)
+                tomorrow.setHours(20);
+                tomorrow.setMinutes(30);
+                Notifications.scheduleLocalNotificationAsync(
+                  createNotification(),
+                  {
+                    time: tomorrow,
+                    repeat: 'day',
+                  }
+                );
+                console.log("finish reseting")
+                AsyncStorage.setItem(FLASHCARDS_NOTIFICATION_KEY, JSON.stringify(true))
+              }
+            })
+        }
+      })
+  }

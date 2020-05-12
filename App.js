@@ -17,6 +17,7 @@ import DeckDetails from './components/DeckDetail';
 import Quiz from './components/Quiz';
 import { purple, white } from './utils/color';
 import reducer from './store/reducers';
+import { setLocalNotification } from './utils/helpers';
 
 
 
@@ -111,6 +112,9 @@ const MainNav = () =>(
 )
 
 export default class App extends Component{
+  componentDidMount(){
+    setLocalNotification()
+  }
   render(){
     return (
       <Provider store={createStore(reducer,applyMiddleware(thunk))} >
