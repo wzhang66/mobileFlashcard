@@ -92,7 +92,6 @@ export async function deleteDeck (deckId) {
 
 // Handle notification
 export function clearLocalNotification () {
-    console.log("clearing");
     return AsyncStorage.removeItem(FLASHCARDS_NOTIFICATION_KEY)
       .then(Notifications.cancelScheduledNotificationAsync)
 }
@@ -117,11 +116,9 @@ export function setLocalNotification () {
     AsyncStorage.getItem(FLASHCARDS_NOTIFICATION_KEY)
       .then(JSON.parse)
       .then((data)=>{
-        console.log(data)
         if(data === null ){
           Permissions.askAsync(Permissions.NOTIFICATIONS)
             .then(({status})=>{
-                console.log(status)
               if(status === 'granted'){
                 Notifications.cancelScheduledNotificationAsync();
                 let tomorrow = new Date();
@@ -135,7 +132,6 @@ export function setLocalNotification () {
                     repeat: 'day',
                   }
                 );
-                console.log("finish reseting")
                 AsyncStorage.setItem(FLASHCARDS_NOTIFICATION_KEY, JSON.stringify(true))
               }
             })

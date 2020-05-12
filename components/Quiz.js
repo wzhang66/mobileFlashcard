@@ -79,17 +79,6 @@ class Quiz extends Component{
         clearLocalNotification().then(setLocalNotification)
     }
 
-    // goBack = () =>{
-    //     // Navigate to Home
-        
-    //     // Clear local notification and reset
-    //     // clearLocalNotification()
-    //     //     .then(()=>{
-    //     //         console.log(reseting);
-    //     //         setLocalNotification()
-    //     //     })
-    // }
-
     render() {
         const {questions} = this.props.deck;
         if(this.props.deck.questions.length === 0){
@@ -143,7 +132,7 @@ class Quiz extends Component{
     Content
     showScore = () => {
         this.setTitle('Score');
-        this.resetLocalNotification()
+        this.resetLocalNotification();
         return(
         <View style={styles.containers}>
             <Text style={styles.text}>

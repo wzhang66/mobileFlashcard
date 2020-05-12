@@ -119,8 +119,6 @@ export default class App extends Component{
     return (
       <Provider store={createStore(reducer,applyMiddleware(thunk))} >
       <View style={styles.container}>
-        {/* <Home /> */}
-        {/* <AddDeck /> */}
         <NavigationContainer>
           <MobileStatusBar backgroundColor={purple} barStyle='light-content'/>
           <MainNav />
