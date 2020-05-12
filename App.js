@@ -14,7 +14,7 @@ import Decks from './components/Decks';
 import AddDeck from './components/AddDeck';
 import NewCard from './components/NewCard';
 import DeckDetails from './components/DeckDetail';
-import NoCardPage from './components/NoCardsPage';
+import Quiz from './components/Quiz';
 import { purple, white } from './utils/color';
 import reducer from './store/reducers';
 
@@ -89,8 +89,8 @@ const MainNav = () =>(
         }
       }} />
     <Stack.Screen 
-      name="NoCard"
-      component={NoCardPage}
+      name="Quiz"
+      component={Quiz}
       options={{
         headerTintColor: white,
         headerStyle:{

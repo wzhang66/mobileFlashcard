@@ -17,11 +17,9 @@ class DeckDetails extends Component {
             'Home'
         );
         this.props.dispatch(removeDeckHandler(deckId))
-        console.log('deleting', deckId);
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext){
-        console.log("update?")
         return nextProps.deck !== undefined
     }
 
@@ -43,7 +41,8 @@ class DeckDetails extends Component {
                     <TouchableOpacity 
                         style={styles.buttonWhite} 
                         onPress={()=>this.props.navigation.navigate(
-                            'NoCard'
+                            'Quiz',
+                            {deckId:deck.id}
                         )}>
                         <Text style={{fontSize:20}}>
                             Start Quiz
